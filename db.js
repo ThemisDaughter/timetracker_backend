@@ -16,9 +16,9 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
       id INTEGER PRIMARY KEY, \
       title TEXT NOT NULL, \
       description TEXT, \
-      total_time BIGINT \
-      completed_time BIGINT \
-      completed BOOLEAN \
+      total_time BIGINT, \
+      completed_time BIGINT, \
+      completed BOOLEAN, \
       abandoned BOOLEAN \
     )");
   return db;
