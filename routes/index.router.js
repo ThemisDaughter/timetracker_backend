@@ -5,5 +5,4 @@ const router = express.Router();
 
 router.get('/', fetchAllTodos);
 router.post('/', postNewTodo);
-
 module.exports = router;
