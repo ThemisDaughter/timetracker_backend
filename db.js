@@ -1,6 +1,5 @@
 var sqlite3 = require('sqlite3');
 var mkdirp = require('mkdirp');
-const { fetchAllTodos } = require('./controllers/todo.controller');
 
 mkdirp.sync('./var/db');
 
@@ -17,9 +16,9 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
       title TEXT NOT NULL, \
       description TEXT, \
       total_time_planned BIGINT, \
-      total_time_studied BIGINT, \
-      completed BOOLEAN, \
-      abandoned BOOLEAN \
+      total_time_studied BIGINT DEFAULT 0, \
+      completed BOOLEAN DEFAULT false, \
+      abandoned BOOLEAN  DEFAULT false\
     )");
   // week creates the number of seconds (or miliseconds?) studied each day
   db.run("CREATE TABLE IF NOT EXISTS weeks(\
@@ -54,9 +53,5 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
     )")
   return db;
 })();
-
-
-  
-
 
 module.exports = db;

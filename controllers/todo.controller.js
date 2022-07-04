@@ -14,15 +14,16 @@ const fetchAllTodos = (req, res, next) => {
 
 const postNewTodo = (req, res, next) => {
 
-  const { title, description, times_per_week, total_time, completed_time, completed, abandoned } = req.body;
-
-  db.run("INSERT INTO  todos(title,description,times_per_week,total_time,completed_time,completed, abandoned) VALUES (?, ?, ?, ?, ?, ?, ?)", [title, description, times_per_week, total_time, completed_time, completed, abandoned],
-    (err) => {
-      if (err) { res.status(500).send(err.message) }
-      else {
-        res.send('success')
+  // const { title, description, times_per_week, total_time_planned, completed_time, completed, abandoned } = req.body;
+  const { title, hours } = req.body;
+  // db.run("INSERT INTO  todos(title,description,times_per_week,total_time_planned,completed_time,completed, abandoned) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING;", [title, description, times_per_week, total_time, completed_time, completed, abandoned],
+  db.run("INSERT INTO todos(title,total_time_planned) VALUES (?, ?) RETURNING *;", [title, hours], (err, row) => {
+      if (err) {
+        res.sendStatus(500)
+      } else {
+        console.log(row)
       }
-    })
+    });
 }
 
 module.exports = { fetchAllTodos, postNewTodo };
