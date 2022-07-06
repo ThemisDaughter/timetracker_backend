@@ -1,4 +1,4 @@
-var sqlite3 = require('sqlite3');
+var sqlite3 = require('sqlite3').verbose();
 var mkdirp = require('mkdirp');
 
 mkdirp.sync('./var/db');
@@ -8,8 +8,8 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
   if (err) return console.error(err.message);
 });
 
-(function rundb() {
-  console.log('running db')
+function rundb () {
+  console.log('creating db (if not exists)')
   // the todo itself contains the planned time and days per week.
   db.run("CREATE TABLE IF NOT EXISTS todos(\
       id INTEGER PRIMARY KEY, \
@@ -17,9 +17,10 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
       description TEXT, \
       total_time_planned BIGINT, \
       total_time_studied BIGINT DEFAULT 0, \
-      completed BOOLEAN DEFAULT false, \
-      abandoned BOOLEAN  DEFAULT false\
-    )");
+      status TEXT NOT NULL DEFAULT 'active'\
+      );");
+  // with the status, other options include 'abandoned', 'completed' and 'paused' 
+
   // week creates the number of seconds (or miliseconds?) studied each day
   db.run("CREATE TABLE IF NOT EXISTS weeks(\
     id INTEGER PRIMARY KEY,\
@@ -40,18 +41,17 @@ var db = new sqlite3.Database('./var/db/todos.db', err => {
     day_7_date TEXT,\
     total_time BIGINT\
     todoID REFERENCES todos(id)\
-    )");
+    );");
   // worksession row is added when the user clicks start and runs until the user clicks end or until some time that has yet to be decided over has passed.
   // if it is incomplete, the user is asked how long they studied that day. Else, the session date is checked for another session with the same todo reference and the
   // time added to the weekday. the session can then be deleted
   db.run("CREATE TABLE IF NOT EXISTS worksessions(\
     id INTEGER PRIMARY KEY,\
-    date TEXT,\
     start_time TEXT,\
     end_time TEXT,\
     todoID REFERENCES todos(id)\
-    )")
+    );")
   return db;
-})();
+};
 
-module.exports = db;
+module.exports = rundb();

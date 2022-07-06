@@ -1,27 +1,35 @@
 const db = require('../db');
 
 const fetchAllTodos = (req, res, next) => {
-  console.log('function running')
-  db.all('SELECT * FROM todos', [], (err, data) => {
+  db.all('SELECT * FROM todos;', [], (err, data) => {
     if (err) {
       console.error(err.message)
     } else {
-      console.log('should be sending data')
+      console.log(data)
       res.status(200).json(data);
     }
   })
 }
 
-const postNewTodo = (req, res, next) => {
 
+const postNewTodo = (req, res, next) => {
   // const { title, description, times_per_week, total_time_planned, completed_time, completed, abandoned } = req.body;
   const { title, hours } = req.body;
-  // db.run("INSERT INTO  todos(title,description,times_per_week,total_time_planned,completed_time,completed, abandoned) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING;", [title, description, times_per_week, total_time, completed_time, completed, abandoned],
-  db.run("INSERT INTO todos(title,total_time_planned) VALUES (?, ?) RETURNING *;", [title, hours], (err, row) => {
-      if (err) {
+  // Haha, lexical scoped arrow functions don't work that well as callbacks. What a waste of time!!!
+  db.run("INSERT INTO todos(title,total_time_planned) VALUES(?, ?) RETURNING *;", [title, hours], function(err){
+    currentId = this.lastID;
+    if (err) {
+      console.log(err);
         res.sendStatus(500)
-      } else {
-        console.log(row)
+    } else {
+      db.all('SELECT * FROM todos WHERE id = ?;', [currentId], function(err, data) {
+        if (err) {
+          res.sendStatus(500)
+        } else {
+          console.log(data)
+          res.json(data)
+        }
+      })
       }
     });
 }
