@@ -14,9 +14,9 @@ const fetchAllTodos = (req, res, next) => {
 
 const postNewTodo = (req, res, next) => {
   // const { title, description, times_per_week, total_time_planned, completed_time, completed, abandoned } = req.body;
-  const { title, hours } = req.body;
+  const { title, minutes } = req.body;
   // Haha, lexical scoped arrow functions don't work that well as callbacks. What a waste of time!!!
-  db.run("INSERT INTO todos(title,total_time_planned) VALUES(?, ?) RETURNING *;", [title, hours], function(err){
+  db.run("INSERT INTO todos(title,total_time_planned) VALUES(?, ?) RETURNING *;", [title, minutes], function(err){
     currentId = this.lastID;
     if (err) {
       console.log(err);
