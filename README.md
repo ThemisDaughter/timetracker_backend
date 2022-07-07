@@ -2,7 +2,7 @@
 
 As someone with fast-changing interests, I needed a way to keep track of my learning process. Normal todo apps woudn't do. I needed something to track the time spent on a subject, if possible even the regularity with which I learn (coming soon?). So this is the skeleton I came up with:
 
-![screenshot](/client/public/Screenshot.png?raw=true "timetracker")
+![screenshot](https://github.com/ThemisDaughter/timetracker_frontend/tree/master/public/Screenshot.png?raw=true "timetracker")
 
 
 # Getting Started 
