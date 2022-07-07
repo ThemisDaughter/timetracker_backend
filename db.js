@@ -15,8 +15,8 @@ function rundb () {
       id INTEGER PRIMARY KEY, \
       title TEXT NOT NULL, \
       description TEXT, \
-      total_time_planned BIGINT, \
-      total_time_studied BIGINT DEFAULT 0, \
+      total_minutes_planned BIGINT, \
+      total_minutes_studied BIGINT DEFAULT 0, \
       status TEXT NOT NULL DEFAULT 'active'\
       );");
   // with the status, other options include 'abandoned', 'completed' and 'paused' 
@@ -39,7 +39,7 @@ function rundb () {
     day_6_date TEXT,\
     day_6 BIGINT,\
     day_7_date TEXT,\
-    total_time BIGINT\
+    total_minutes BIGINT\
     todoID REFERENCES todos(id)\
     );");
   // worksession row is added when the user clicks start and runs until the user clicks end or until some time that has yet to be decided over has passed.
